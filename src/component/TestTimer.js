@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Bar } from 'react-native-progress';
 import CustomButton from './ButtonComponent/CustomButton';
 import CategoryPicker from './CategoryPicker/CategoryPicker';
+import Timer from './TimerComponent/Timer';
 
 const TestTimer = () => {
   const [timers, setTimers] = useState([]);
@@ -67,6 +68,10 @@ const TestTimer = () => {
   const handleCancel = () => {
     // clear all form fields
   }
+
+  const handleTimerUpdate = (updatedTimer) => {
+    setTimers(timers.map(timer => (timer.id === updatedTimer.id ? updatedTimer : timer)));
+  };
 
   const deleteTimer = (id) => {
     setTimers(timers.filter(timer => timer.id !== id));
@@ -216,21 +221,12 @@ const TestTimer = () => {
                 data={timers.filter(timer => timer.category === category)}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
-                  <View style={styles.timerItem}>
-                    <Text>{item.name}</Text>
-                    <Text>{formatTime(item.remainingTime)}</Text>
-                    <Bar
-                      progress={item.duration === 0 ? 0 : item.remainingTime / item.duration}
-                      width={100}
-                      color="blue"
-                    />
-                    <View style={styles.timerActions}>
-                      <Button title="Start" onPress={() => startTimer(item.id)} disabled={item.running || item.completed} />
-                      <Button title="Pause" onPress={() => pauseTimer(item.id)} disabled={!item.running} />
-                      <Button title="Reset" onPress={() => resetTimer(item.id)} />
-                    </View>
-                    <Text>{item.completed ? "Completed" : item.running ? "Running" : "Paused"}</Text>
-                  </View>
+                  <Timer
+                    item={item}
+                    pauseTimer={pauseTimer}
+                    resetTimer={resetTimer}
+                    startTimer={startTimer}
+                  />
                 )}
               />
             )}
