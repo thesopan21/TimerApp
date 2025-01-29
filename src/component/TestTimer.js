@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Bar } from 'react-native-progress';
+import CustomButton from './ButtonComponent/CustomButton';
+import CategoryPicker from './CategoryPicker/CategoryPicker';
 
 const TestTimer = () => {
   const [timers, setTimers] = useState([]);
@@ -10,6 +12,13 @@ const TestTimer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [completedTimerName, setCompletedTimerName] = useState('');
   const [editingTimer, setEditingTimer] = useState(null);
+
+  const availableCategories = ["Workout", "Study", "Break", "Personal", "Office"];
+
+  const handleCategorySelection = (selectedCategory) => {
+    setNewTimer({ ...newTimer, category: selectedCategory });
+    console.log("Selected Category:", selectedCategory); // Log the selected category
+  };
 
 
   const loadTimers = async () => {
@@ -54,6 +63,10 @@ const TestTimer = () => {
       setNewTimer({ name: '', duration: 0, category: '' });
     }
   };
+
+  const handleCancel = () => {
+    // clear all form fields
+  }
 
   const deleteTimer = (id) => {
     setTimers(timers.filter(timer => timer.id !== id));
@@ -136,31 +149,51 @@ const TestTimer = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Timer App</Text>
       {/* Timer Input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Timer Name"
-        value={newTimer.name}
-        onChangeText={text => setNewTimer({ ...newTimer, name: text })}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Duration (minutes)"
-        keyboardType="numeric"
-        value={newTimer.duration.toString()}
-        onChangeText={text => setNewTimer({ ...newTimer, duration: parseInt(text) || 0 })} // Parse as integer
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Category"
-        value={newTimer.category}
-        onChangeText={text => setNewTimer({ ...newTimer, category: text })}
-      />
+      <View style={styles.inputContainer}>
 
-      {editingTimer ? (
-        <Button title="Update Timer" onPress={updateTimer} />
-      ) : (
-        <Button title="Create Timer" onPress={createTimer} />
-      )}
+        <TextInput
+          style={styles.input}
+          placeholder="Timer Name"
+          value={newTimer.name}
+          onChangeText={text => setNewTimer({ ...newTimer, name: text })}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Duration (minutes)"
+          keyboardType="numeric"
+          value={newTimer.duration.toString()}
+          onChangeText={text => setNewTimer({ ...newTimer, duration: parseInt(text) || 0 })}
+        />
+
+        <CategoryPicker
+          categories={availableCategories}
+          onCategorySelect={handleCategorySelection}
+        />
+
+        {
+          editingTimer ?
+            (
+              <Button title="Update Timer" onPress={updateTimer} />
+            )
+            :
+            (
+              <View style={styles.buttonContainer}>
+                <CustomButton
+                  style={styles.saveButton}
+                  textStyle={styles.saveButtonText}
+                  title="Save Timer"
+                  onPress={createTimer}
+                />
+                <CustomButton
+                  title="Cancel"
+                  style={styles.cancelButton}
+                  onPress={handleCancel}
+                />
+              </View>
+            )
+        }
+      </View>
+
       <FlatList
         data={Array.from(new Set(timers.map(timer => timer.category)))} // Get unique categories
         keyExtractor={item => item}
@@ -187,9 +220,9 @@ const TestTimer = () => {
                     <Text>{item.name}</Text>
                     <Text>{formatTime(item.remainingTime)}</Text>
                     <Bar
-                        progress={item.duration === 0 ? 0 : item.remainingTime / item.duration}
-                        width={100}
-                        color="blue"
+                      progress={item.duration === 0 ? 0 : item.remainingTime / item.duration}
+                      width={100}
+                      color="blue"
                     />
                     <View style={styles.timerActions}>
                       <Button title="Start" onPress={() => startTimer(item.id)} disabled={item.running || item.completed} />
@@ -226,7 +259,42 @@ const TestTimer = () => {
 };
 
 const styles = StyleSheet.create({
-  // ... (other styles remain the same)
+  title: {
+    paddingVertical: 12,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333'
+  },
+  inputContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 12
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  saveButton: {
+    backgroundColor: 'green',
+    flex: 1
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: 'red'
+  },
+  saveButtonText: {
+
+  },
   categoryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

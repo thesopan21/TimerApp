@@ -7,7 +7,7 @@ const App = () => {
     <View>
       <TestTimer />
     </View>
-  )
+  ) 
 }
 
 export default App
