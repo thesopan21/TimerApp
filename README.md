@@ -1,8 +1,21 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Timer App
 
-# Getting Started
+A React Native app for creating, managing, and interacting with multiple customizable timers.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Assumptions
+
+*   Timers are stored locally using AsyncStorage.
+*   The app assumes durations are provided in seconds.
+*   Basic styling is provided; you can customize it further.
+
+## Setup Instructions
+
+1.  Clone the repository: `git clone https://github.com/thesopan21/TimerApp.git`
+2.  Navigate to the project directory: `cd TimerApp`
+3.  Install dependencies: `npm install`
+4.  Start the development server: `npx react-native run-android` or `npx react-native run-ios`
+
+
 
 ## Step 1: Start Metro
 
@@ -60,3 +73,12 @@ When you want to forcefully reload, for example to reset the state of your app, 
 
 - **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
 - **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+
+
+## Future Enhancements
+
+*   Implement history tracking.
+*   Add more advanced timer features (e.g., repeating timers, custom notifications).
+*   Improve UI/UX.
+*   Implement unit tests.
+*   Add more robust error handling.
