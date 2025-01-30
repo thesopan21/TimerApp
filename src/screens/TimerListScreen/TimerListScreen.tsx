@@ -24,12 +24,12 @@ const TimerListScreen = () => {
     const [expandedCategories, setExpandedCategories] = useState<{ [category: string]: boolean }>({});
     const [modalVisible, setModalVisible] = useState(false);
     const [completedTimerName, setCompletedTimerName] = useState('');
-    const [refreshing, setRefreshing] = useState(false); // State for refresh control
+    const [refreshing, setRefreshing] = useState(false); 
 
 
 
     const loadTimers = async () => {
-        setRefreshing(true); // Set refreshing to true before loading
+        setRefreshing(true); 
         try {
             const storedTimers = await AsyncStorage.getItem('timers');
             if (storedTimers) {
@@ -38,7 +38,7 @@ const TimerListScreen = () => {
         } catch (error) {
             console.error("Error loading timers:", error);
         } finally {
-            setRefreshing(false); // Set refreshing to false after loading (success or error)
+            setRefreshing(false);
         }
     };
 
@@ -139,7 +139,7 @@ const TimerListScreen = () => {
             <CustomButton title="Add New Timer" onPress={() => navigation.navigate('AddTimer')} />
 
             <FlatList
-                data={Array.from(new Set(timers.map(timer => timer.category)))} // Get unique categories
+                data={Array.from(new Set(timers.map(timer => timer.category)))}
                 keyExtractor={item => item}
                 renderItem={({ item: category }) => (
                     <View>

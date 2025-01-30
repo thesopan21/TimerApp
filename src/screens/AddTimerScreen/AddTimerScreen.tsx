@@ -18,7 +18,7 @@ const AddTimerScreen = () => {
 
     const handleCategorySelection = (selectedCategory: string) => {
         setNewTimer({ ...newTimer, category: selectedCategory });
-        console.log("Selected Category:", selectedCategory); // Log the selected category
+        console.log("Selected Category:", selectedCategory); 
     };
 
 

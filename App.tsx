@@ -1,16 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
-import TestTimer from './src/component/TestTimer'
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import TimerListScreen from './src/screens/TimerListScreen/TimerListScreen';
 import AddTimerScreen from './src/screens/AddTimerScreen/AddTimerScreen';
 
 export type RootStackParamList = {
-  Home: undefined; // Home screen does not take any parameters
+  Home: undefined; 
   AddTimer: undefined;
   TimerHistory: undefined;
-  // Add more screens here as needed
 };
 
 export type NavigationTypes = NativeStackNavigationProp<RootStackParamList>;
