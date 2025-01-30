@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Bar } from 'react-native-progress';
 import CustomButton from './ButtonComponent/CustomButton';
@@ -204,17 +204,19 @@ const TestTimer = () => {
         keyExtractor={item => item}
         renderItem={({ item: category }) => (
           <View>
-            <TouchableOpacity onPress={() => toggleCategoryExpansion(category)}>
+            <Pressable onPress={() => toggleCategoryExpansion(category)}>
               <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>{category} ({timers.filter(t => t.category === category).length})</Text>
-                <Text>{expandedCategories[category] ? '-' : '+'}</Text> {/* Expansion indicator */}
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={styles.categoryTitle}>{category} ({timers.filter(t => t.category === category).length})</Text>
+                  <Text style={styles.toggleDropdown}>{expandedCategories[category] ? '-' : '+'}</Text> {/* Expansion indicator */}
+                </View>
                 <View style={styles.bulkActions}>
-                  <Button title="Start All" onPress={() => handleBulkAction(category, 'start')} />
-                  <Button title="Pause All" onPress={() => handleBulkAction(category, 'pause')} />
-                  <Button title="Reset All" onPress={() => handleBulkAction(category, 'reset')} />
+                  <CustomButton title="Start All" onPress={() => handleBulkAction(category, 'start')} />
+                  <CustomButton title="Pause All" onPress={() => handleBulkAction(category, 'pause')} />
+                  <CustomButton title="Reset All" onPress={() => handleBulkAction(category, 'reset')} />
                 </View>
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
             {expandedCategories[category] && (
               <FlatList
@@ -292,12 +294,19 @@ const styles = StyleSheet.create({
 
   },
   categoryHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+  },
+  categoryHeadingContainer: {
+    flexDirection: "row",
+    justifyContent: 'space-evenly',
+    alignItems:"center"
+  },
+  toggleDropdown:{
+    fontSize: 25,
+    fontWeight: 'bold',
   },
   categoryTitle: {
     fontSize: 16,
@@ -307,6 +316,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   bulkActions: {
+    justifyContent:"flex-start",
     flexDirection: 'row',
   },
   modalContainer: {
